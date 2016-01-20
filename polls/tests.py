@@ -15,3 +15,18 @@ class QuestionMethodTests(TestCase):
     future_question = Question(pub_date=time)
     self.assertEqual(future_question.was_published_recently(), False)
 
+  def test_was_published_recently_with_old_question(self):
+    """
+    was_published_recently() should return False for questions whose pub_date is older than 1 day
+    """
+    old_time = timezone.now() - datetime.timedelta(days=30)
+    old_question = Question(pub_date=old_time)
+    self.assertEqual(old_question.was_published_recently(), False)
+
+  def test_was_published_recently_with_recent_question(self):
+    """
+    was_published_recently should return True for questions whose pub)date is within the last day 
+    """
+    recent_time = timezone.now() - datetime.timedelta(hours=1)
+    recent_question = Question(pub_date=recent_time)
+    self.assertEqual(recent_question.was_published_recently(), True)
